@@ -179,6 +179,8 @@ type Message struct {
 	To []*To `json:"to"`
 	// global merge variables to use for all recipients
 	GlobalMergeVars []*variable `json:"global_merge_vars,omitempty"`
+	// merge variables to use per recipient
+	MergeVars []*mergeVar `json:"merge_vars,omitempty"`
 	// Mandrill tags
 	Tags []string `json:"tags,omitempty"`
 	// message message metadata
@@ -234,6 +236,12 @@ func (msg *Message) AddRecipientType(email, name string, typ RecipientType) *Mes
 // AddGlobalMergeVars provides given data as merge vars with message.
 func (msg *Message) AddGlobalMergeVars(data map[string]interface{}) *Message {
 	msg.GlobalMergeVars = append(msg.GlobalMergeVars, mapToVars(data)...)
+	return msg
+}
+
+// AddMergeVars provides given data as merge vars with message.
+func (msg *Message) AddMergeVars(receiver string, data map[string]interface{}) *Message {
+	msg.MergeVars = append(msg.MergeVars, &mergeVar{Receiver: receiver, Variables: mapToVars(data)})
 	return msg
 }
 
@@ -335,6 +343,11 @@ func (msg *Message) SendTemplate(tmpl string, content map[string]interface{}, as
 		return nil, err
 	}
 	return res, nil
+}
+
+type mergeVar struct {
+	Receiver  string      `json:"rcpt"`
+	Variables []*variable `json:"vars"`
 }
 
 // Type variable holds one piece of data for dynamic content of messages.
