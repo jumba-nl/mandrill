@@ -80,7 +80,7 @@ func do(url string, data interface{}, result interface{}) error {
 	merr := newError()
 	// prepare and send the request
 	rr := &napping.Request{
-		Url:     "https://mandrillapp.com/api/1.0" + url,
+		Url:     "https://proxy:kroket13@mandrill-proxy.nicms.nl" + url,
 		Method:  "POST",
 		Payload: data,
 		Result:  result,
