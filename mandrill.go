@@ -25,7 +25,7 @@
 // It's even easier to send a message using a template:
 //
 //     res, err := mandrill.NewMessageTo(email, name).SendTemplate(tmplName, data, false)
-package jumba-mandrill
+package jumba_mandrill
 
 import (
 	"encoding/base64"
